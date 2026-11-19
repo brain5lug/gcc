@@ -5043,6 +5043,40 @@ cp_coroutine_transform::build_ramp_function ()
   if (!delete_frame_call || delete_frame_call == error_mark_node)
     return false;
 
+  /* The coroutine frame is allocated by a call to the selected allocation
+     function, passing only the required size, so no over-aligned storage
+     is requested.  Warn if the frame requires more alignment than the
+     allocation provides; this can apply whether the allocation function
+     comes from the promise type or from the global scope.  */
+  unsigned int default_new_align = malloc_alignment ();
+
+  if (warn_coroutine_frame_alignment
+      && TYPE_ALIGN (frame_type) > default_new_align)
+    {
+      char *frame_name
+	= xasprintf ("%s.Frame",
+		     IDENTIFIER_POINTER (DECL_NAME (orig_fn_decl)));
+      warning_at (loc, OPT_Wcoroutine_frame_alignment,
+		  "coroutine frame %qs requires extended alignment of %u"
+		  " bytes, but its allocation function only guarantees"
+		  " %u-byte alignment",
+		  frame_name, TYPE_ALIGN_UNIT (frame_type),
+		  default_new_align / BITS_PER_UNIT);
+      free (frame_name);
+
+      for (tree field = TYPE_FIELDS (frame_type); field;
+	   field = DECL_CHAIN (field))
+	{
+	  if (TREE_CODE (field) == FIELD_DECL
+	      && DECL_ALIGN (field) > default_new_align)
+	    inform (DECL_SOURCE_LOCATION (field),
+		    "field %qs of type %qT requires %u-byte alignment,"
+		    " forcing over-alignment of the coroutine frame",
+		    IDENTIFIER_POINTER (DECL_NAME (field)),
+		    TREE_TYPE (field), DECL_ALIGN_UNIT (field));
+	}
+    }
+
   /* At least verify we can lookup the get return object method.  */
   tree get_ro_meth
     = lookup_promise_method (orig_fn_decl,

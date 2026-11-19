@@ -268,7 +268,8 @@ in the following sections.
 -Wcatch-value  -Wcatch-value=@var{n}
 -Wno-class-conversion  -Wclass-memaccess
 -Wcomma-subscript  -Wconditionally-supported
--Wno-conversion-null  -Wctad-maybe-unsupported
+-Wno-conversion-null  -Wcoroutine-frame-alignment
+-Wctad-maybe-unsupported
 -Wctor-dtor-privacy  -Wdangling-reference
 -Wno-defaulted-function-deleted
 -Wno-delete-incomplete
@@ -5252,6 +5253,13 @@ Warn about overriding virtual functions that are not marked with the
 @item -Wno-conversion-null @r{(C++ and Objective-C++ only)}
 Do not warn for conversions between @code{NULL} and non-pointer
 types. @option{-Wconversion-null} is enabled by default.
+
+@opindex Wcoroutine-frame-alignment
+@opindex Wno-coroutine-frame-alignment
+@item -Wcoroutine-frame-alignment @r{(C++ and Objective-C++ only)}
+Warn when a coroutine frame requires extended alignment that is not
+provided by the allocation function used to allocate the frame.  This
+warning is enabled by default.
 
 @end table
 

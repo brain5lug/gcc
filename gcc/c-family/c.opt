@@ -611,6 +611,10 @@ Wconversion-null
 C++ ObjC++ Var(warn_conversion_null) Init(1) Warning
 Warn for converting NULL from/to a non-pointer type.
 
+Wcoroutine-frame-alignment
+C++ Var(warn_coroutine_frame_alignment) Init(1) Warning
+Warn about coroutine frames that require extended alignment.
+
 Wcpp
 C ObjC C++ ObjC++ CppReason(CPP_W_WARNING_DIRECTIVE)
 ; Documented in common.opt
