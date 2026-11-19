@@ -581,6 +581,10 @@ Wconditionally-supported
 C++ ObjC++ Var(warn_conditionally_supported) Warning
 Warn for conditionally-supported constructs.
 
+Wcoroutine-frame-alignment
+C++ Var(warn_coroutine_frame_alignment) Init(1) Warning
+Warn about coroutine frames that require extended alignment.
+
 Wconversion
 C ObjC C++ ObjC++ Var(warn_conversion) Warning
 Warn for implicit type conversions that may change a value.
